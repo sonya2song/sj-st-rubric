@@ -1,0 +1,23 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+    var article_url="http://seattletimes.com/html/localnews/2019484765_specialed21m.html";
+    var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
+    var url = readability_url + article_url
+    console.log(url);
+    $.getJSON(url,function(json){
+       $('#document-viewer-container').append("<strong>" + json.author + "</strong>" + json.content);
+    });
+});
+</script>
+
+</head>
+<body>
+
+<div id="document-viewer-container"></div>
+
+</body>
+</html>
