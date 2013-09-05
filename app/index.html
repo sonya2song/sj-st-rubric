@@ -2,20 +2,83 @@
 <head>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
   <script type="text/javascript" src="/js/highlighter.js"></script>
+  <script type="text/javascript" src="/js/miso.ds.0.4.1.js"></script>
+  <style type="text/css">
+  #document-viewer-container : {
+
+  }
+
+  </style>
+</head>
+
+<body style='background:#f1f1f1;'>
+  <img id="header-img" src="/img/header_logo.jpg"> <br><br>
+  <p> Welcome to the Solutions Journalism scoring app. </p>
+  <div id="submit-url">
+    <strong> Please Input A URL to Analyze: </strong> <br/>
+      <form id="submit-url-form">
+        <input id="url-box" name="url" type="text" size="150"></input> <br/>
+        <input id='submit-url-button' type="button" name="submit" value="Submit URL">
+        <input id='reset-button' type="button" name="reset" value="Reset Form">
+      </form>
+    <hr></hr>
+  </div>
+  <div id="document-viewer-container" 
+       style="float:left; 
+              width:500px; 
+              background:#f1f1f1; 
+              padding: 10;
+              border-width: 0px; 
+              border-style: solid;
+              border-color: grey;">
+  </div>
+  <p>
+    <br/><br/><br/><br/>
+  </p>
+  <span class='highlighter-container' style='visibility:hidden;'>
+      <div id="pop-up-container" style="background-color: #ffcc00;">
+        <form id="pop-up-form">
+          <input type="radio" name="tag" value="problem"> Problem <br/>
+          <input type="radio" name="tag" value="solution"> Solution <br/>
+          <input type="radio" name="tag" value="response"> Response <br/>
+          <input type="radio" name="tag" value="result"> Result <br/>
+          <input type="radio" name="tag" value="response_to_solution"> Response to Solution <br/>
+          <input type="radio" name="tag" value="response_to_result"> Response to Result <br/>
+          <input id='submit-form' type="button" name="submit" value="submit">
+        </form>
+      </div>
+  </span>
+
+
   <script type="text/javascript">
   // Global Variable
-  var ANNOTATION_DATA = [];
+    var ds = new Miso.Dataset({
+      importer : Miso.Dataset.Importers.GoogleSpreadsheet,
+      parser : Miso.Dataset.Parsers.GoogleSpreadsheet,
+      key : "0An9Q5Mkz4lG7dEhDVWQyNFlRNldJWjlkbC0wYldUeWc",
+      worksheet : "1"
+    });
 
-  $(document).ready(function(){
+    var ANNOTATION_DATA = {};
+    ANNOTATION_DATA = [];
 
-      var article_url="http://seattletimes.com/html/localnews/2019484765_specialed21m.html";
+    var loadArticle = function(article_url) {
+      article_url = typeof article_url !== 'undefined' ? article_url : $('#url-box').val();
+      ANNOTATION_DATA['article_url'] = article_url;
+
+      console.log(article_url);
       var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
       var url = readability_url + article_url;
       $.getJSON(url,function(json){
+          // fix problem with <p> tags
           var content = json.content;
-          content = content.replace(/<p>|<\/p>/g, "<br/>");
+          content = content.replace(/<[^<>(<a)]+>/g, "####");
+          content = content.replace(/((\#\#\#\#)(\s+)?)+/g, "<br><br>");
+          ANNOTATION_DATA['content'] = content;
+          console.log(json);
          $('#document-viewer-container').append(
-            "<strong>" + json.author + "</strong>" + content
+            "<p> <a href=\"" + article_url + "\" target=\"_blank\"> Original Article </a> </p>" +
+             content + "<br>"
             );
          $('#document-viewer-container').highlighter({complete:function(){
             $('.highlighter-container input[type=radio]').prop('checked', false);
@@ -23,72 +86,64 @@
 
          }});
       });
-         
-  });
+
+    }
+    $( "#submit-url-button" ).click(function() {
+        loadArticle()  
+        $('#document-viewer-container').css('border-width', '1px')
+    });
+    $( "#reset-button" ).click(function() {
+        var article_url = $('#url-box').val();
+        window.location.reload();
+        loadArticle(article_url)  
+        $('#document-viewer-container').css('border-width', '1px')
+    });
+    $( "#submit-form" ).click(function() {
+      
+      // get tag name
+      var tag = $('input[name=tag]:checked', '#pop-up-form').val();
+      var article_url = $('#url-box').val();
+      console.log(tag);
+      // determine color
+      var color = '#000';
+      if (tag == 'problem') {
+        color = "#A6CEE3";
+      } else if (tag == 'solution') {
+        color =  "#1F78B4";
+      } else if (tag == 'response') {
+        color =  "#B2DF8A";
+      } else if (tag == 'result') {
+        color =  "#33A02C";
+      } else if (tag =='response_to_solution') {
+        color =  "#FB9A99";
+      } else if (tag == 'response_to_result') {
+        color =  "#E31A1C";
+      }
+
+      var selection = window.getSelection();
+      if (selection.toString()!=="") {
+        var range = selection.getRangeAt(0);
+        var fragment = range.cloneContents();
+   
+        var div = document.createElement('div');
+        div.appendChild( fragment.cloneNode(true) );
+
+        var span = document.createElement("span");
+        span.innerHTML = div.innerHTML;
+        span.style.backgroundColor = color;
+        range.deleteContents();
+        range.insertNode(span);
+      }
+
+
+      highlight_dictionary = {
+        'tag' : tag,
+        'text' : range.toString()
+      };
+
+      ANNOTATION_DATA['annotations'].push(highlight_dictionary);
+      console.log(ANNOTATION_DATA);
+    });  
   </script>
-
-</head>
-<body>
-<div id="document-viewer-container"></div>
-<span class='highlighter-container' style='visibility:hidden;'>
-    <div id="pop-up-container" style="background-color: #ffcc00;">
-      <form id="pop-up-form">
-        <input type="radio" name="tag" value="problem"> Problem <br/>
-        <input type="radio" name="tag" value="solution"> Solution <br/>
-        <input type="radio" name="tag" value="response"> Response <br/>
-        <input type="radio" name="tag" value="result"> Result <br/>
-        <input type="radio" name="tag" value="response_to_solution"> Response to Solution <br/>
-        <input type="radio" name="tag" value="response_to_result"> Response to Result <br/>
-        <input id='submit-form' type="button" name="submit" value="submit">
-      </form>
-    </div>
-</span>
-<script type='text/javascript'>
-  $( "#submit-form" ).click(function() {
-    
-    // get tag name
-    var tag = $('input[name=tag]:checked', '#pop-up-form').val();
-    console.log(tag);
-    // determine color
-    var color = '#000';
-    if (tag == 'problem') {
-      color = "blue";
-    } else if (tag == 'solution') {
-      color =  "red";
-    } else if (tag == 'response') {
-      color =  "green";
-    } else if (tag == 'result') {
-      color =  "yellow";
-    } else if (tag =='response_to_solution') {
-      color =  "pink";
-    } else if (tag == 'response_to_result') {
-      color =  "orange";
-    }
-
-    var selection = window.getSelection();
-    if (selection.toString()!=="") {
-      var range = selection.getRangeAt(0);
-      var fragment = range.cloneContents();
- 
-      var div = document.createElement('div');
-      div.appendChild( fragment.cloneNode(true) );
-
-      var span = document.createElement("span");
-      span.innerHTML = div.innerHTML;
-      span.style.backgroundColor = color;
-      range.deleteContents();
-      range.insertNode(span);
-    }
-
-
-    highlight_dictionary = {
-      'tag' : tag,
-      'text' : range.toString()
-    };
-
-    ANNOTATION_DATA.push(highlight_dictionary);
-    console.log(ANNOTATION_DATA);
-  });  
-</script>
 </body>
 </html>
