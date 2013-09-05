@@ -1,15 +1,7 @@
 <html>
 <head>
-<<<<<<< HEAD
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
   <script type="text/javascript" src="/js/highlighter.js"></script>
-  <script type="text/javascript" src="/js/miso.ds.0.4.1.js"></script>
-  <style type="text/css">
-  #document-viewer-container : {
-
-  }
-
-  </style>
 </head>
 
 <body style='background:#f1f1f1;'>
@@ -33,9 +25,6 @@
               border-style: solid;
               border-color: grey;">
   </div>
-  <p>
-    <br/><br/><br/><br/>
-  </p>
   <span class='highlighter-container' style='visibility:hidden;'>
       <div id="pop-up-container" style="background-color: #ffcc00;">
         <form id="pop-up-form">
@@ -50,18 +39,10 @@
       </div>
   </span>
 
-
   <script type="text/javascript">
   // Global Variable
-    var ds = new Miso.Dataset({
-      importer : Miso.Dataset.Importers.GoogleSpreadsheet,
-      parser : Miso.Dataset.Parsers.GoogleSpreadsheet,
-      key : "0An9Q5Mkz4lG7dEhDVWQyNFlRNldJWjlkbC0wYldUeWc",
-      worksheet : "1"
-    });
-
     var ANNOTATION_DATA = {};
-    ANNOTATION_DATA = [];
+    ANNOTATION_DATA['annotations'] = [];
 
     var loadArticle = function(article_url) {
       article_url = typeof article_url !== 'undefined' ? article_url : $('#url-box').val();
@@ -73,11 +54,13 @@
       $.getJSON(url,function(json){
           // fix problem with <p> tags
           var content = json.content;
-          content = content.replace(/<[^<>(<a)(img)]+>/g, "####");
+          content = content.replace(/<[^<>]+>/g, "####");
           content = content.replace(/((\#\#\#\#)(\s+)?)+/g, "<br><br>");
+          ANNOTATION_DATA['content'] = content;
+          console.log(json);
          $('#document-viewer-container').append(
             "<p> <a href=\"" + article_url + "\" target=\"_blank\"> Original Article </a> </p>" +
-             content + "<br>"
+             content + "<br><br><br><br><br>"
             );
          $('#document-viewer-container').highlighter({complete:function(){
             $('.highlighter-container input[type=radio]').prop('checked', false);
@@ -86,71 +69,6 @@
          }});
       });
 
-=======
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-<script type="text/javascript" src="/js/highlighter.js"></script>
-<script type="text/javascript">
-
-// Global Variable
-var ANNOTATION_DATA = [];
-
-$(document).ready(function(){
-
-    var article_url="http://seattletimes.com/html/localnews/2019484765_specialed21m.html";
-    var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
-    var url = readability_url + article_url;
-    $.getJSON(url,function(json){
-       $('#document-viewer-container').append("<strong>" + json.author + "</strong>" + json.content);
-       $('#document-viewer-container').highlighter({complete:function(){
-          $('.highlighter-container input[type=radio]').prop('checked', false);
-          $('.highlighter-container').css('visibility', 'visible');
-
-       }});
-    });
-       
-});
-</script>
-
-
-</head>
-<body>
-
-<div id="document-viewer-container"></div>
-
-<span class='highlighter-container' style='visibility:hidden;'>
-    <div id="pop-up-container" style="background-color: #ffcc00;">
-      <form id="pop-up-form">
-        <input type="radio" name="tag" value="problem"> Problem <br/>
-        <input type="radio" name="tag" value="solution"> Solution <br/>
-        <input type="radio" name="tag" value="response"> Response <br/>
-        <input type="radio" name="tag" value="result"> Result <br/>
-        <input type="radio" name="tag" value="response_to_solution"> Response to Solution <br/>
-        <input type="radio" name="tag" value="response_to_result"> Response to Result <br/>
-        <input id='submit-form' type="button" name="submit" value="submit">
-      </form>
-    </div>
-</span>
-<script type='text/javascript'>
-  $( "#submit-form" ).click(function() {
-    
-    // get tag name
-    var tag = $('input[name=tag]:checked', '#pop-up-form').val();
-    console.log(tag);
-    // determine color
-    var color = '#000';
-    if (tag == 'problem') {
-      color = "blue";
-    } else if (tag == 'solution') {
-      color =  "red";
-    } else if (tag == 'response') {
-      color =  "green";
-    } else if (tag == 'result') {
-      color =  "yellow";
-    } else if (tag =='response_to_solution') {
-      color =  "pink";
-    } else if (tag == 'response_to_result') {
-      color =  "orange";
->>>>>>> parent of 4943186... highlighting functionality is now working
     }
     $( "#submit-url-button" ).click(function() {
         loadArticle()  
@@ -184,7 +102,6 @@ $(document).ready(function(){
         color =  "#E31A1C";
       }
 
-<<<<<<< HEAD
       var selection = window.getSelection();
       if (selection.toString()!=="") {
         var range = selection.getRangeAt(0);
@@ -199,28 +116,6 @@ $(document).ready(function(){
         range.deleteContents();
         range.insertNode(span);
       }
-=======
-    var selection = window.getSelection();
-    if (selection.toString()!=="") {
-      var range = selection.getRangeAt(0);
-
-      var span = document.createElement("span");
-      var fragment = range.cloneContents();
- 
-      // make new element, insert document fragment, then get innerHTML!
-      var div = document.createElement('div');
-      div.appendChild( fragment.cloneNode(true) );
- 
-      // your document fragment to a string (w/ html)! (yay!)
-      var html = div.innerHTML;
-
-      span.innerHTML = range.toString();
-      span.style.backgroundColor = color;
-      range.deleteContents();
-      range.insertNode(span);
-      console.log(span);  
-    }
->>>>>>> parent of 4943186... highlighting functionality is now working
 
 
       highlight_dictionary = {
@@ -228,7 +123,7 @@ $(document).ready(function(){
         'text' : range.toString()
       };
 
-      ANNOTATION_DATA.push(highlight_dictionary);
+      ANNOTATION_DATA['annotations'].push(highlight_dictionary);
       console.log(ANNOTATION_DATA);
     });  
   </script>
