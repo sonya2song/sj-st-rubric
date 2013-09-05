@@ -72,10 +72,8 @@
       $.getJSON(url,function(json){
           // fix problem with <p> tags
           var content = json.content;
-          content = content.replace(/<[^<>(<a)]+>/g, "####");
+          content = content.replace(/<[^<>(<a)(img)]+>/g, "####");
           content = content.replace(/((\#\#\#\#)(\s+)?)+/g, "<br><br>");
-          ANNOTATION_DATA['content'] = content;
-          console.log(json);
          $('#document-viewer-container').append(
             "<p> <a href=\"" + article_url + "\" target=\"_blank\"> Original Article </a> </p>" +
              content + "<br>"
@@ -141,7 +139,7 @@
         'text' : range.toString()
       };
 
-      ANNOTATION_DATA['annotations'].push(highlight_dictionary);
+      ANNOTATION_DATA.push(highlight_dictionary);
       console.log(ANNOTATION_DATA);
     });  
   </script>
