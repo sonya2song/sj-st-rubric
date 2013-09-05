@@ -1,35 +1,35 @@
 <html>
 <head>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-<script type="text/javascript" src="/js/highlighter.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/highlighter.js"></script>
+  <script type="text/javascript">
+  // Global Variable
+  var ANNOTATION_DATA = [];
 
-// Global Variable
-var ANNOTATION_DATA = [];
+  $(document).ready(function(){
 
-$(document).ready(function(){
+      var article_url="http://seattletimes.com/html/localnews/2019484765_specialed21m.html";
+      var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
+      var url = readability_url + article_url;
+      $.getJSON(url,function(json){
+          var content = json.content;
+          content = content.replace(/<p>|<\/p>/g, "<br/>");
+         $('#document-viewer-container').append(
+            "<strong>" + json.author + "</strong>" + content
+            );
+         $('#document-viewer-container').highlighter({complete:function(){
+            $('.highlighter-container input[type=radio]').prop('checked', false);
+            $('.highlighter-container').css('visibility', 'visible');
 
-    var article_url="http://seattletimes.com/html/localnews/2019484765_specialed21m.html";
-    var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
-    var url = readability_url + article_url;
-    $.getJSON(url,function(json){
-       $('#document-viewer-container').append("<strong>" + json.author + "</strong>" + json.content);
-       $('#document-viewer-container').highlighter({complete:function(){
-          $('.highlighter-container input[type=radio]').prop('checked', false);
-          $('.highlighter-container').css('visibility', 'visible');
-
-       }});
-    });
-       
-});
-</script>
-
+         }});
+      });
+         
+  });
+  </script>
 
 </head>
 <body>
-
 <div id="document-viewer-container"></div>
-
 <span class='highlighter-container' style='visibility:hidden;'>
     <div id="pop-up-container" style="background-color: #ffcc00;">
       <form id="pop-up-form">
@@ -68,22 +68,16 @@ $(document).ready(function(){
     var selection = window.getSelection();
     if (selection.toString()!=="") {
       var range = selection.getRangeAt(0);
-
-      var span = document.createElement("span");
       var fragment = range.cloneContents();
  
-      // make new element, insert document fragment, then get innerHTML!
       var div = document.createElement('div');
       div.appendChild( fragment.cloneNode(true) );
- 
-      // your document fragment to a string (w/ html)! (yay!)
-      var html = div.innerHTML;
 
-      span.innerHTML = range.toString();
+      var span = document.createElement("span");
+      span.innerHTML = div.innerHTML;
       span.style.backgroundColor = color;
       range.deleteContents();
       range.insertNode(span);
-      console.log(span);  
     }
 
 
