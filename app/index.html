@@ -1,0 +1,700 @@
+<html>
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/highlighter.js"></script>
+</head>
+
+<body style='background:#f1f1f1;'>
+  <img id="header-img" src="/img/header_logo.jpg"> <br><br>
+  <p> Welcome to the Solutions Journalism scoring app. </p>
+  <div id="submit-url">
+    <strong> Please Input A URL to Analyze: </strong> <br/>
+      <form id="submit-url-form">
+        <input id="url-box" name="url" type="text" size="150"></input> <br/>
+        <input id='submit-url-button' type="button" name="submit" value="Submit URL">
+        <input id='reset-button' type="button" name="reset" value="Reset Form">
+        <input id='finish-annotation-form' type="button" name="finish-annotation" value="Complete Annotations">
+      </form>
+    <hr></hr>
+  </div>
+<div id="meta-container" style="display: inline-block;">
+  <div id="document-viewer-container" 
+       style="float:left; 
+              width:500px; 
+              background:#f1f1f1; 
+              padding: 10;
+              border-width: 0px; 
+              border-style: solid;
+              border-color: grey;">
+  </div>
+  <div id="form-container" style="float:right; padding:10; width: 400px;">
+    <form action=
+        "https://docs.google.com/forms/d/13EyHZbX1Ln3M4Wqrl1dl8C8qiLt8cjL4ip00A016MI8/formResponse"
+        id="ss-form" method="post" name="ss-form" onsubmit="" target="_self">
+            <div style="margin-left: 2em; padding-left: 0">
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-text" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_98167410"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_98167410">What is your name? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                (We need your name to track different coders'
+                                responses)
+                            </div><input class="ss-q-short" dir="auto" id=
+                            "entry_98167410" name="entry.98167410" required=""
+                            title="" type="text" value="">
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1094508028"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1094508028">Does the story explain the
+                                causes of a social problem? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1897914240_1" name="entry.1897914240"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1897914240_2" name="entry.1897914240"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1897914240_3" name="entry.1897914240"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_678625221"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_678625221">Does the story present an
+                                associated response to that problem? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                (Even if the response is not working)
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1841201727_1" name="entry.1841201727"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1841201727_2" name="entry.1841201727"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1841201727_3" name="entry.1841201727"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1192205503"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1192205503">Does the headline/lead sound
+                                bite reflect a solutions angle? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_476972529_1" name="entry.476972529"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_476972529_2" name="entry.476972529"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_476972529_3" name="entry.476972529"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1391431169"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1391431169">Does the story get into the
+                                problem solving and how-to details of
+                                implementation? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                (Whether the response is working or not)
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_362919179_1" name="entry.362919179"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_362919179_2" name="entry.362919179"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_362919179_3" name="entry.362919179"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1719617162"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1719617162">Is the problem solving process
+                                central to the narrative? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                (Does it generate curiosity?)
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_956557485_1" name="entry.956557485"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_956557485_2" name="entry.956557485"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_956557485_3" name="entry.956557485"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-item-required ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_155473172"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_155473172">Does the story present evidence
+                                of results linked to the response? <label for=
+                                "itemView.getDomIdToLabel()"></label> <span class=
+                                "ss-required-asterisk">*</span></label>
+                            </div>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1030048885_1" name="entry.1030048885"
+                                required="" type="radio" value="No"></span>
+                                <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1030048885_2" name="entry.1030048885"
+                                required="" type="radio" value="Somewhat"></span>
+                                <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1030048885_3" name="entry.1030048885"
+                                required="" type="radio" value="Clearly"></span>
+                                <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1797481326"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1797481326">Does the story critically
+                                consider alternative explanations?</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_1797481326"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_1797481326"></label>
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_277625720_1" name="entry.277625720" type=
+                                "radio" value="No"></span> <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_277625720_2" name="entry.277625720" type=
+                                "radio" value="Somewhat"></span> <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_277625720_3" name="entry.277625720" type=
+                                "radio" value="Clearly"></span> <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1686874027"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1686874027">Does the story convey an insight
+                                or teachable lesson?</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_1686874027"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_1686874027">(whether or not the response
+                                works)</label>
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1875548049_1" name="entry.1875548049"
+                                type="radio" value="No"></span> <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1875548049_2" name="entry.1875548049"
+                                type="radio" value="Somewhat"></span> <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1875548049_3" name="entry.1875548049"
+                                type="radio" value="Clearly"></span> <span class=
+                                "ss-choice-label">Clearly</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good">
+                    <div class="ss-item ss-radio" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1778185767"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1778185767">Does the story avoid reading
+                                like a puff piece and does it give greater
+                                attention to the response than to a
+                                leader/innovator/do-gooder?</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_1778185767"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_1778185767"></label>
+                            </div>
+
+                            <ul class="ss-choices">
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1540894643_1" name="entry.1540894643"
+                                type="radio" value="No"></span> <span class=
+                                "ss-choice-label">No</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1540894643_2" name="entry.1540894643"
+                                type="radio" value="Somewhat"></span> <span class=
+                                "ss-choice-label">Somewhat</span></label></li>
+
+                                <li class="ss-choice-item"><label><span class=
+                                "ss-choice-item-control goog-inline-block"><input class="ss-q-radio"
+                                id="group_1540894643_3" name="entry.1540894643"
+                                type="radio" value="Yes"></span> <span class=
+                                "ss-choice-label">Yes</span></label></li>
+                            </ul>
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+                <input name="draftResponse" type="hidden" value="[] ">
+                <input name="pageHistory" type="hidden" value="0">
+
+                <div class="ss-item ss-navigate">
+                    <table id="navigation-table">
+                        <tbody>
+                            <tr>
+                                <td class="ss-form-entry goog-inline-block" dir=
+                                "ltr" id="navigation-buttons">
+                                    <input id="ss-submit" name="submit" type=
+                                    "submit" value="Submit Everything!">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ss-form-question errorbox-good" style="visibility:hidden;">
+                    <div class="ss-item ss-text" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_842954229"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_842954229">article_url</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_842954229"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_842954229"></label>
+                            </div><input class="ss-q-short" dir="auto" id=
+                            "entry_842954229" name="entry.842954229" title="" type=
+                            "text" value="">
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good" style="visibility:hidden;">
+                    <div class="ss-item ss-text" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_2146594322"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_2146594322">article_content</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_2146594322"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_2146594322"></label>
+                            </div><input class="ss-q-short" dir="auto" id=
+                            "entry_2146594322" name="entry.2146594322" title=""
+                            type="text" value="">
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good" style="visibility:hidden;">
+                    <div class="ss-item ss-text" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_381671704"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_381671704">article_annotations</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_381671704"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_381671704"></label>
+                            </div><input class="ss-q-short" dir="auto" id=
+                            "entry_381671704" name="entry.381671704" title="" type=
+                            "text" value="">
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ss-form-question errorbox-good" style="visibility:hidden;">
+                    <div class="ss-item ss-text" dir="ltr">
+                        <div class="ss-form-entry">
+                            <label class="ss-q-item-label" for=
+                            "entry_1787320211"></label>
+
+                            <div class="ss-q-title">
+                                <label class="ss-q-item-label" for=
+                                "entry_1787320211">article_headline</label>
+                            </div><label class="ss-q-item-label" for=
+                            "entry_1787320211"></label>
+
+                            <div class="ss-q-help ss-secondary-text" dir="ltr">
+                                <label class="ss-q-item-label" for=
+                                "entry_1787320211"></label>
+                            </div><input class="ss-q-short" dir="auto" id=
+                            "entry_1787320211" name="entry.1787320211" title=""
+                            type="text" value="">
+
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+  <span class='highlighter-container' 
+        style='visibility:hidden; 
+               padding=40px 40px 40px 40px; 
+               border-width: 1px; 
+               border-style: solid;
+               border-color: grey;
+               background-color: #ffcc00;'>
+      <div id="pop-up-container" style="background-color: #ffcc00;">
+        <form id="pop-up-form">
+          <input type="radio" name="tag" value="problem"> Problem <br/>
+          <input type="radio" name="tag" value="solution"> Solution <br/>
+          <input type="radio" name="tag" value="response"> Response <br/>
+          <input type="radio" name="tag" value="result"> Result <br/>
+          <input type="radio" name="tag" value="response_to_solution"> Response to Solution <br/>
+          <input type="radio" name="tag" value="response_to_result"> Response to Result <br/>
+          <input id='submit-annotation-form' type="button" name="submit-annotation" value="Annotate">
+        </form>
+      </div>
+  </span>
+
+  <script type="text/javascript">
+  // Global Variable
+    var ANNOTATION_DATA = {};
+    ANNOTATION_DATA = [];
+    var article_url;
+
+    var loadArticle = function() {
+
+      article_url = $('#url-box').val();
+
+      var readability_url = "https://www.readability.com/api/content/v1/parser?token=43e6e0e0b590f00a095a6a0e64f6c9da11783a5a&callback=?&url=";
+
+      var url = readability_url + article_url;
+
+      $.getJSON(url,function(json){
+          // fix problem with <p> tags
+          console.log(json);
+          headline = json.title;
+          content = json.content;
+          content = content.replace(/<[^<>]+>/g, "####");
+          content = content.replace(/((\#\#\#\#)(\s+)?)+/g, "<br><br>");
+         $('#entry_2146594322').val(content.toString());
+         $('#entry_1787320211').val(headline.toString());
+         $('#document-viewer-container').append(
+                "<h2>" + headline + "</h2>" + content
+            );
+
+         $('#document-viewer-container').highlighter({complete:function(){
+            $('.highlighter-container input[type=radio]').prop('checked', false);
+            $('.highlighter-container').css('visibility', 'visible');
+        
+        
+
+         }});
+      });
+      return article_url
+
+    }
+    $( "#submit-url-button" ).click(function() {
+        // load article, return url
+        article_url = loadArticle();
+        $('#entry_842954229').val(article_url);
+        // wrap container in border
+        $('#document-viewer-container').css('border-width', '1px')
+    });
+    $( "#reset-button" ).click(function() {
+        window.location.reload();
+    });
+    $( "#submit-annotation-form" ).click(function() {
+      
+      // get tag name
+      var tag = $('input[name=tag]:checked', '#pop-up-form').val();
+      var article_url = $('#url-box').val();
+
+      // determine color
+      var color = '#000';
+      if (tag == 'problem') {
+        color = "#A6CEE3";
+      } else if (tag == 'solution') {
+        color =  "#1F78B4";
+      } else if (tag == 'response') {
+        color =  "#B2DF8A";
+      } else if (tag == 'result') {
+        color =  "#33A02C";
+      } else if (tag =='response_to_solution') {
+        color =  "#FB9A99";
+      } else if (tag == 'response_to_result') {
+        color =  "#E31A1C";
+      }
+
+      var selection = window.getSelection();
+      if (selection.toString()!=="") {
+        var range = selection.getRangeAt(0);
+        var fragment = range.cloneContents();
+   
+        var div = document.createElement('div');
+        div.appendChild( fragment.cloneNode(true) );
+
+        var span = document.createElement("span");
+        span.innerHTML = div.innerHTML;
+        span.style.backgroundColor = color;
+        range.deleteContents();
+        range.insertNode(span);
+      }
+
+      highlight_dictionary = {
+        'tag' : tag,
+        'text' : range.toString()
+      };
+
+      ANNOTATION_DATA.push(highlight_dictionary);
+      console.log();
+    });
+    $( "#finish-annotation-form" ).click(function() {
+        alert('Are you sure that you\'re done?');
+        json_string = JSON.stringify(ANNOTATION_DATA);
+        $('#entry_381671704').val(json_string);
+    });  
+  </script>
+</body>
+</html>
