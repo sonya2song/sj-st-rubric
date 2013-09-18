@@ -1,0 +1,57 @@
+body {
+  background-color: #f3f0df;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 300;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0 10px;
+}
+#meta-container {
+  width: 1000px;
+}
+
+#document-viewer-container {
+  display: none; 
+  width: 500px; 
+  background: #f9f7ef; 
+  padding: 10;
+  border-width: 0px; 
+  border-style: solid;
+  border-color: grey;
+  font-size: 12px;
+}
+
+#form-container {
+  display: none;
+  padding: 10px; 
+  width: 360px;
+  font-size: 10px;
+  vertical-align: top;
+}
+
+.highlighter-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 10px;
+  visibility: hidden; 
+  padding: 9px; 
+  border-width: 1px; 
+  border-style: solid;
+  border-color: grey;
+  background-color: rgba(155, 153, 142, 0.9);
+}
+
+.ss-q-item-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.ss-form-question {
+  margin-bottom: 10px;
+}
