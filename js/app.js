@@ -52,15 +52,13 @@
 
       // determine color
       if (tag == 'problem') {
-        var color = "#A6CEE3";
+        var color = "#ffcc00";
       } else if (tag == 'solution') {
-        var color =  "#e2f3df"; 
-      } else if (tag == 'response') {
-        var color =  "#f0dff3";
+        var color =  "#00ffcc"; 
       } else if (tag == 'result') {
-        var color =  "#dff3f0";
-      } 
-
+        var color =  "#d532ff";
+      }
+      
       var selection = window.getSelection();
       if (selection.toString()!=="") {
         var range = selection.getRangeAt(0);
