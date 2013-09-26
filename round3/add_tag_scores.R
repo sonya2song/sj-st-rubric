@@ -1,9 +1,9 @@
 setwd('~/Dropbox/code/sj-st-rubric/round3/')
 df <- read.csv('responses.csv', as.is=TRUE)
+rm(list=ls())
 library('rjson')
 library('plyr')
-library(doMC)
-registerDoMC(2)
+
 names(df) <- c(
     "coder",
     "v1",
@@ -25,14 +25,14 @@ names(df) <- c(
 
 extract_tag_info <- function(tag, text) {
   
-  tag_text <- iconv(gsub('<br>', '', tag$text), "UTF-8")
+  tag_text <- gsub('<br>', '', tag$text)
   text <- gsub('<br>', '', text)
   tag_label <- tag$tag
   tag_length <- nchar(tag_text) 
   start_pattern <- substring(tag_text, 1, 20)
   start <- str_locate(text, start_pattern)[1]
   end <- start + tag_length
-  
+
   return(
     data.frame(
       tag = tag_label,
@@ -49,9 +49,9 @@ tag_scores <- function(tags, text) {
   json_tags = fromJSON(tags)
   text <- iconv(gsub('<br>', '', text), "UTF-8")
   text_length <- nchar(text)
-  
+
   # generate tag_df
-  tag_df <- ldply(sample_json, extract_tag_info, text)
+  tag_df <- ldply(json_tags, extract_tag_info, text)
    
   solution_df = tag_df[tag_df$tag=='solution',]
   problem_df = tag_df[tag_df$tag=='problem',]
@@ -74,26 +74,19 @@ tag_scores <- function(tags, text) {
     )
 }
 
-for (i in 1:nrow(df)) {
-  print(i)
-  text <- df[i, ]$content
-  tags <- df[i, ]$annotations
-  
-  tag_df <- tag_scores(tags, text)
-  df[i, ] <- cbind(df[i,], tag_df)
+add_tag_scores <- function(df) {
+  new_df = data.frame()
+  for (i in 1:nrow(df)) {
+    print(i)
+    text <- df[i, ]$content
+    tags <- df[i, ]$annotations
+    
+    tag_df <- tag_scores(tags, text)
+    new_df <- rbind(new_df, cbind(df[i,], tag_df))
+  }
+  return(new_df)
 }
-head(df)
-sample_json <- fromJSON()
-text <- df$content[1]
-sample_json[[1]]
-tag_scores(df$annotations[1], text)
-start_pattern <- substring(sample_json[[1]]$text, 1, 20)
-start_pattern
 
+tag_df <- agg_tag_scores(df)
 
-
-nchar(text)
-aregexec(pattern=, text=sample_content)
-sample_content
-
-sample_json[[1]]$text
+write.csv(tag_df, 'responses_with_tags.csv', row.names=FALSE)
