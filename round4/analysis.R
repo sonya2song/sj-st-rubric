@@ -3,6 +3,7 @@ library('rjson')
 library('plyr')
 library(doMC)
 library('stringr')
+library('hash')
 registerDoMC(2)
 names(df) <- c(
     "coder",
@@ -23,9 +24,12 @@ names(df) <- c(
     "check"
   )
 
-extract_tag_info <- function(tag, text) {
-  tag = fromJSON(df[1,]$annotations)
-  tags <- data.frame(matrix(unlist(tag), ncol=2, byrow=T), stringsAsFactors=F)
+for (i in 1:nrow(df)) {
+  print(1)
+  text <- df[1, ]$content
+  tag <- df[1, ]$annotations
+
+  tags <- data.frame(matrix(unlist(fromJSON(tag)), ncol=2, byrow=T), stringsAsFactors=F)
   colnames(tags) <- c('label', 'text')
   tags$text
   tag_text <- gsub('<br>', '', tags$text)
@@ -33,83 +37,58 @@ extract_tag_info <- function(tag, text) {
   tag_label <- tags$label
   tag_label
   
-  text = df[1,]$content
+  #   text = df[1,]$content
   text <- gsub('<br>', '', text)
-  text
-  
-  tags_length = vector(mode='list', length=3)
-  tags_length
-  names(tags_length) = c('solution', 'problem', 'result')
-  tags_length['solution'] <- 0
-  tags_length['problem'] <- 0
-  tags_length['result'] <- 0
-  tags_length
-  
-  for (i in 1:nrows(tags)) {
-    start_pattern <- substring(tag_text[i], 1, 20)
-    start <- str_locate(text, start_pattern)[1]
-    tag_length <- nchar(tag_text[i])
-    end <- start + tag_length
-    c(start, tag_length, end)  
-    tags[1]$label
-    tags_length["tags[1]$label"] 
-    = tag_length + tags_length[tags[i]$label]
-  }
-    
-  
-
-  tag_results = data.frame(
-    tag = tag_label,
-    length = tag_length,
-    tag_start = start,
-    tag_end = end,
-    stringsAsFactors=FALSE
-  )
-  
-  return(tag_results)
-}
-
-
-tag_scores <- function(tags, text) {
-  tags = df$annotations[1]
-  json_tags = fromJSON(tags)
-  text <- iconv(gsub('<br>', '', text), "UTF-8")
   text
   text_length <- nchar(text)
   
-  # generate tag_df
-#   tag_df <- ldply(sample_json, extract_tag_info, text)
-  tag_df <- ldply(json_tags, extract_tag_info, text)
-   
-  solution_df = tag_df[tag_df$tag=='solution',]
-  problem_df = tag_df[tag_df$tag=='problem',]
-  response_df = tag_df[tag_df$tag=='result',]
+  #   tags_length = hash(keys=c(keys="solution","result","problem"),values=rep(0,3))
+  #   tags_length
   
-  return(
-    data.frame(
-      per_solution = sum(solution_df$length) / text_length * 100,
-      per_problem = sum(problem_df$length) / text_length * 100,
-      per_response = sum(response_df$length) / text_length * 100,
-      first_mention = tag_df$tag[which.min(tag_df$tag_start)],
-      min_pos_solution = min(solution_df$tag_start) / text_length * 100,
-      min_pos_problem = min(problem_df$tag_start) / text_length * 100 ,
-      min_pos_response = min(response_df$tag_start) / text_length * 100,
-      avg_pos_solution = mean(solution_df$tag_start) / text_length * 100,
-      avg_pos_problem = mean(problem_df$tag_start) / text_length * 100 ,
-      avg_pos_response = mean(response_df$tag_start) / text_length * 100,
-      stringsAsFactors=FALSE
-      )
-    )
+  tag_result <- data.frame(label=tags$label,start=rep(0,nrow(tags)),length=rep(0,nrow(tags)),end=rep(0,nrow(tags)))
+  summary(tag_result)
+  tag_stats <- data.frame(label=tags$label,start=rep(0,nrow(tags)),length=rep(0,nrow(tags)),end=rep(0,nrow(tags)))
+  summary(tag_result)
+  
+  for (j in 1:nrow(tags)) {
+    start_pattern <- substring(tag_text[j], 1, 20)
+    start <- str_locate(text, start_pattern)[1]
+    tag_length <- nchar(tag_text[j])
+    end <- start + tag_length
+    temp <- tags$label[j]
+    tag_result[j,] <- c(temp,start,tag_length,end)
+  }
+  
+  tag_result
+  str(tag_result)
+  tag_result$start <- as.numeric(tag_result$start)
+  tag_result$length <- as.numeric(tag_result$length)
+  tag_result$end <- as.numeric(tag_result$end)
+  
+  tag_result$label
+  per_tag <- data.frame(tapply(tag_result$length, tag_result$label, sum) / text_length * 100)
+  str(per_tag)
+  per_tag["solution",]
+  
+  first_tag <- data.frame(tapply(tag_result$start, tag_result$label, min) / text_length * 100)
+  str(first_tag)
+  first_tag["solution",]
+  
+  tag_stats <- data.frame(
+    per_solution = per_tag["solution",], 
+    per_problem = per_tag["problem",],
+    per_result = per_tag["result",],
+    first_solution = first_tag["solution",],
+    first_problem = first_tag["problem",],
+    first_result = first_tag["result",]
+  )
+  
+  str(tag_stats)
+  tag_df <- rbind(tag_df, tag_stats)
 }
 
-for (i in 1:nrow(df)) {
-  print(i)
-  text <- df[i, ]$content
-  tags <- df[i, ]$annotations
-  
-  tag_df <- tag_scores(tags, text)
-  df[i, ] <- cbind(df[i,], tag_df)
-}
+df <- cbind(df, tag_stats)
+
 head(df)
 sample_json <- df[1,]$annotations
 text <- df$content[1]

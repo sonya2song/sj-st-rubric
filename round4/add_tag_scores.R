@@ -1,6 +1,6 @@
-setwd('~/Dropbox/code/sj-st-rubric/round3/')
+# setwd('~/Dropbox/code/sj-st-rubric/round3/')
 df <- read.csv('responses.csv', as.is=TRUE)
-rm(list=ls())
+# rm(list=ls())
 library('rjson')
 library('plyr')
 
@@ -25,6 +25,14 @@ names(df) <- c(
 
 extract_tag_info <- function(tag, text) {
   
+  text <- df[1, ]$content
+  tags <- df[1, ]$annotations
+  json_tags = fromJSON(tags)
+  text <- iconv(gsub('<br>', '', text), "UTF-8")
+  text_length <- nchar(text)
+  
+  json_tags$text
+  
   tag_text <- gsub('<br>', '', tag$text)
   text <- gsub('<br>', '', text)
   tag_label <- tag$tag
@@ -46,6 +54,8 @@ extract_tag_info <- function(tag, text) {
 
 
 tag_scores <- function(tags, text) {
+  text <- df[1, ]$content
+  tags <- df[1, ]$annotations
   json_tags = fromJSON(tags)
   text <- iconv(gsub('<br>', '', text), "UTF-8")
   text_length <- nchar(text)
@@ -87,6 +97,6 @@ add_tag_scores <- function(df) {
   return(new_df)
 }
 
-tag_df <- agg_tag_scores(df)
+tag_df <- add_tag_scores(df)
 
 write.csv(tag_df, 'responses_with_tags.csv', row.names=FALSE)
