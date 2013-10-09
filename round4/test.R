@@ -1,26 +1,25 @@
 df <- read.csv('responses_v10.csv', encoding="UTF-8", header=T, as.is=T)
 library('rjson')
 library('stringr')
-library('ggplot2')
 names(df) <- c(
-    "coder",
-    "v1",
-    "v2",
-    "v3",
-    "v4",
-    "v5",
-    "v6",
-    "v7",
-    "v8",
-    "v9",
-    "v10",
-    "url",
-    "content",
-    "annotations",
-    "ts",
-    "headline",
-    "check"
-  )
+  "coder",
+  "v1",
+  "v2",
+  "v3",
+  "v4",
+  "v5",
+  "v6",
+  "v7",
+  "v8",
+  "v9",
+  "v10",
+  "url",
+  "content",
+  "annotations",
+  "ts",
+  "headline",
+  "check"
+)
 
 # str(df)
 
@@ -32,98 +31,77 @@ df[df=="Somewhat"] <- 1
 df[df=="No"] <- 0
 head(df[,2:11])
 
-# for (i in c(1:12,17)){
-#   df[,i]<-factor(df[,i])  
-# }
-# summary(df[,11])
-# for (i in 2:9){
-# #   df[,i]<-factor(df[,i], levels(df[,i])[c(2,3,1)])  
-#   df[,i]<-ordered(df[,i], levels=c("No", "Somewhat", "Clearly"))  
-# }
-# summary(df[,9])
-# for (i in 10:11){
-#   levels(df[,i])<-c("Somewhat","Yes","No")
-# #   df[,i]<-factor(df[,i], levels(df[,i])[c(3,1,2)])  
-#   df[,i]<-ordered(df[,i], levels=c("No", "Somewhat", "Yes"))  
-# }
-# summary(df[,11])
-# sum(as.numeric(df[1,2:11]))
-
 tag_df <- data.frame()
 # str(tag_df)
 
 for (i in 1:nrow(df)) {
-#   i <- 24
-  print(i)
-  text <- df[i, ]$content
-  tag <- df[i, ]$annotations
-
+  print(4)
+  text <- df[4, ]$content
+  tag <- df[, ]$annotations
+  
   tags <- data.frame(matrix(unlist(fromJSON(tag)), ncol=2, byrow=T), stringsAsFactors=F)
   colnames(tags) <- c('label', 'text')
+  #   tags$text
   tag_text <- gsub('<br>', '', tags$text)
+  #   length(tag_text)
   tag_label <- tags$label
+  #   tag_label
   
+  #   text = df[1,]$content
   text <- gsub('<br>', '', text)
+  #   text
   text_length <- nchar(text)
   
   #   tags_length = hash(keys=c(keys="solution","result","problem"),values=rep(0,3))
   #   tags_length
   
   tag_result <- data.frame(label=tags$label,start=rep(0,nrow(tags)),length=rep(0,nrow(tags)),end=rep(0,nrow(tags)))
-#   summary(tag_result)
+  #   summary(tag_result)
   tag_stats <- data.frame(label=tags$label,start=rep(0,nrow(tags)),length=rep(0,nrow(tags)),end=rep(0,nrow(tags)))
-#   summary(tag_result)
+  #   summary(tag_result)
   
   for (j in 1:nrow(tags)) {
-#     j <- 3
     start_pattern <- substring(tag_text[j], 1, 20)
-#     Encoding(start_pattern) <- "UTF-8"
-#     print(start_pattern)
-    start_pattern <- gsub("^[^0-9a-zA-Z]*", "", start_pattern, perl=F)
-#     print(start_pattern)
     start <- str_locate(text, start_pattern)[1]
     tag_length <- nchar(tag_text[j])
+    
     end <- start + tag_length
     temp <- tags$label[j]
     tag_result[j,] <- c(temp,start,tag_length,end)
-    print (c(j, temp, start, start_pattern))
+    print (c(temp, substring(tag_text[j], 1, 50),nchar(tag_text[j])))
   }
   
-  tag_result
+  nchar(text)
+  #   str(tag_result)
   tag_result$start <- as.numeric(tag_result$start)
   tag_result$length <- as.numeric(tag_result$length)
   tag_result$end <- as.numeric(tag_result$end)
   
-#   tag_result$label
+  which(tag_result$label=='solution')
+  sum(tag_result[tag_result$label=="solution",]$length)
+  text_length
   per_tag <- data.frame(tapply(tag_result$length, tag_result$label, sum) / text_length * 100)
-  str(per_tag)
+  #   str(per_tag)
   per_tag
   
-  min_tag <- data.frame(tapply(tag_result$start, tag_result$label, min) / text_length * 100)
-  str(min_tag)
-  min_tag
+  first_tag <- data.frame(tapply(tag_result$start, tag_result$label, min) / text_length * 100)
+  #   str(first_tag)
+  #   first_tag["solution",]
   
-  first_mention <- rownames(min_tag)[which(min_tag==min(min_tag[!is.na(min_tag),]))]
-  print (first_mention)
-
   tag_stats <- data.frame(
     per_solution = per_tag["solution",], 
-    per_result = per_tag["result",],
     per_problem = per_tag["problem",],
-    min_solution = min_tag["solution",],
-    min_problem = min_tag["problem",],
-    min_result = min_tag["result",],
-    first_mention = first_mention
+    per_result = per_tag["result",],
+    first_solution = first_tag["solution",],
+    first_problem = first_tag["problem",],
+    first_result = first_tag["result",]
   )
   
-#   str(tag_stats)
+  #   str(tag_stats)
   tag_df <- rbind(tag_df, tag_stats)
-#   tag_df
+  #   tag_df
 }
 
 df <- cbind(df, tag_df)
-sj_score <- data.matrix(df[,2:11]) %*% cbind(sj,nsj)
-df <- cbind(df, sj_score)
-
-# str(df)
+str(df)
 write.csv(df, "responses_with_tags.csv", row.names=F, sep="\t")
