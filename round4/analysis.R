@@ -179,7 +179,7 @@ ggplot(score, aes(y=headline))+
 sj_per <- data.frame(coder=df$coder, per_solution=df$per_solution, min_solution=df$min_solution, score=df$sj, dimension=rep("Solutions Journalism",nrow(df)))
 qj_per <- data.frame(coder=df$coder, per_solution=df$per_solution, min_solution=df$min_solution, score=df$qj, dimension=rep("Quality of Journalism",nrow(df)))
 per <- rbind(sj_per, qj_per)
-df[,c('coder','per_sj')]
+df[,c('coder','per_solution')]
 per$per_solution_int <- 0
 per[per$coder == 'David Bornstein',]$per_solution_int <- floor(per[per$coder == 'David Bornstein',]$per_solution/max(per[per$coder == 'David Bornstein',]$per_solution)*6)
 per[per$coder == 'Keith',]$per_solution_int <- floor(per[per$coder == 'Keith',]$per_solution/max(per[per$coder == 'Keith',]$per_solution)*6)
