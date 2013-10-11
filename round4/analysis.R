@@ -4,6 +4,7 @@ library('stringr')
 library('ggplot2')
 library('reshape2')
 library('colorspace')
+library('Hmisc')
 names(df) <- c(
     "coder",
     "v01",
@@ -135,8 +136,18 @@ names(df_num_m) <- c("Var1", "Var2", "Correlation")
 qplot(x=Var1, y=Var2, data=df_num_m, fill=Correlation, geom="tile")+
   xlab("")+
   ylab("")+
-  ggtitle("Correlation Matrix of Rubric Parameters")
-  
+  ggtitle("Correlation Matrix of Rubric Parameters")+
+  theme(
+    plot.title = element_text(size=22, face="bold"), 
+#     legend.position="top", 
+    legend.title = element_text(size=18, face="bold"), 
+    legend.text = element_text(size = 18),
+    axis.title.x=element_text(face="bold", size=18), 
+    axis.title.y=element_text(face="bold", size=18), 
+    axis.text.y=element_text(size=15, vjust=.5)
+  )
+
+
 
 #### solutions journalism vs. quality of journalism (Inter-coder reliability) ####
 
@@ -168,15 +179,21 @@ ggplot(score, aes(y=headline))+
 sj_per <- data.frame(coder=df$coder, per_solution=df$per_solution, min_solution=df$min_solution, score=df$sj, dimension=rep("Solutions Journalism",nrow(df)))
 qj_per <- data.frame(coder=df$coder, per_solution=df$per_solution, min_solution=df$min_solution, score=df$qj, dimension=rep("Quality of Journalism",nrow(df)))
 per <- rbind(sj_per, qj_per)
-summary(per[per$coder == 'David Bornstein',])
-per$per_solution_int <- factor(floor(per$per_solution/16))
-per$per_solution_int
+df[,c('coder','per_sj')]
+per$per_solution_int <- 0
+per[per$coder == 'David Bornstein',]$per_solution_int <- floor(per[per$coder == 'David Bornstein',]$per_solution/max(per[per$coder == 'David Bornstein',]$per_solution)*6)
+per[per$coder == 'Keith',]$per_solution_int <- floor(per[per$coder == 'Keith',]$per_solution/max(per[per$coder == 'Keith',]$per_solution)*6)
+per$percentage_of_solution <- factor(per$per_solution_int)
+per[per$coder == 'David Bornstein',]$per_solution_int
+per[per$coder == 'Keith',]$per_solution_int
 
 ggplot(per, aes(x=min_solution))+
-  geom_point(aes(y=score, color=coder, shape=dimension, size=per_solution_int), position=position_jitter(width=jitter, height=0))+
+  geom_point(aes(y=score, color=coder, shape=dimension, size=percentage_of_solution), position=position_jitter(height=jitter, width=0))+
   scale_shape_manual(values=c(18,21))+
   scale_size_manual(values=1:7*4)+
-  ggtitle("Position of First Solution Tag vs. Score & Percentage of Solution Tags in Text")+
+  ggtitle("Position of First Solution Tag vs. Score & Percentage of Solutions in Text")+
+  xlab("Position of First Solution Tag")+
+  ylab("Solutions Journalism or Quality of Journalism")+
   theme(
     plot.title = element_text(size=22, face="bold"), 
     legend.position="top", 
@@ -186,3 +203,33 @@ ggplot(per, aes(x=min_solution))+
     axis.title.y=element_text(face="bold", size=18), 
     axis.text.y=element_text(size=15, vjust=.5)
   )
+
+#### scatterplot SJ vs. QJ ####
+ggplot(df, aes(sj, qj))+
+  geom_point(aes(color=coder), shape="*", size=24)+
+  ggtitle("Solutions Journalism vs. Quality of Journalism")+
+  xlab("Solutions Journalism")+
+  ylab("Quality of Journalism")+
+  theme(
+    plot.title = element_text(size=22, face="bold"), 
+    legend.position="top", 
+    legend.title = element_text(size=18, face="bold"), 
+    legend.text = element_text(size = 18),
+    axis.title.x=element_text(face="bold", size=18), 
+    axis.title.y=element_text(face="bold", size=18), 
+    axis.text.y=element_text(size=15, vjust=.5)
+  )
+
+rcorr(cbind(df$sj, df$qj), type='pearson')
+
+sj_diff <- (unlist(tapply(df$sj, df$headline, function(x) {abs(x[1]-x)})))
+print (sj_diff[1:14*2])
+order(sj_diff[1:14*2])
+names(sj_diff[1:14*2])[order(sj_diff[1:14*2])]
+cbind(no=1:14, disagreement=sj_diff[1:14*2][order(sj_diff[1:14*2])])
+
+qj_diff <- (unlist(tapply(df$qj, df$headline, function(x) {abs(x[1]-x)})))
+print (qj_diff[1:14*2])
+order(qj_diff[1:14*2])
+names(qj_diff[1:14*2])[order(qj_diff[1:14*2])]
+cbind('#'=1:14, disagreement=qj_diff[1:14*2][order(qj_diff[1:14*2])])
